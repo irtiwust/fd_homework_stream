@@ -122,4 +122,37 @@ public class CarService {
                 .average()
                 .orElse(0);
     }
+
+    /**
+     * Приходит список Car
+     * Проверить, что все машины с Condition - "Broken" старше 10 лет
+     */
+    public Boolean checkBrokenCarsAge(List<Car> cars) {
+        return cars.stream()
+                .filter(car -> "BROKEN".equals(car.getCondition()))
+                .allMatch(car -> car.getAge() > 10);
+    }
+
+    /**
+     * Приходит список Car
+     * Проверить, что хотя бы у одной машины с Condition - "USED" был владелец по имени Adam
+     */
+    public Boolean checkCarOwnerName(List<Car> cars) {
+        return cars.stream()
+                .filter(car -> "USED".equals(car.getCondition()))
+                .flatMap(car -> car.getOwners().stream())
+                .anyMatch(owner -> "Adam".equals(owner.getName()));
+    }
+
+    /**
+     * Приходит список Car
+     * Необходимо вернуть любого Owner старше 36 лет
+     */
+    public Owner getAnyOwner(List<Car> cars) {
+        return cars.stream()
+                .flatMap(car -> car.getOwners().stream())
+                .filter(owner -> owner.getAge() > 36)
+                .findAny()
+                .orElse(null);
+    }
 }
